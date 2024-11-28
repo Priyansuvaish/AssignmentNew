@@ -11,9 +11,6 @@ variables:
   # Environment name
   environmentName: 'quickheel'
 
-  # Agent VM image name
-  vmImageName: 'ubuntuAgent'
-
 stages:
 - stage: Build
   displayName: 'Build stage'
@@ -21,7 +18,7 @@ stages:
   - job: Build
     displayName: 'Build'
     pool:
-      vmImage: $(vmImageName)
+      name: Default
 
     steps:
     - task: ArchiveFiles@2
