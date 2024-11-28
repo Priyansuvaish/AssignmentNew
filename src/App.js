@@ -40,7 +40,6 @@ const App = () => {
   }, [sortBy]);
 
 console.log("data from api",ticketsData)
-console.log("data from api",users)
   const groupTickets = () => {
     const grouped = ticketsData.reduce((acc, ticket) => {
       let key;
