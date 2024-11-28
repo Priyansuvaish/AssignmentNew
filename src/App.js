@@ -3,26 +3,30 @@ import Navbar from "./components/navbar.js";
 import "./App.css";
 
 const App = () => {
-  const ticketsData = [
-    { id: "CAM-1", title: "Update User Profile Page UI", tag: ["Feature request"], userId: "usr-1", status: "Todo", priority: 4 },
-    { id: "CAM-2", title: "Add Multi-Language Support", tag: ["Feature Request"], userId: "usr-2", status: "In progress", priority: 3 },
-    { id: "CAM-3", title: "Optimize Database Queries for Performance", tag: ["Feature Request"], userId: "usr-2", status: "In progress", priority: 1 },
-    { id: "CAM-4", title: "Implement Email Notification System", tag: ["Feature Request"], userId: "usr-1", status: "In progress", priority: 3 },
-    { id: "CAM-5", title: "Enhance Search Functionality", tag: ["Feature Request"], userId: "usr-5", status: "In progress", priority: 0 },
-    { id: "CAM-6", title: "Third-Party Payment Gateway", tag: ["Feature Request"], userId: "usr-2", status: "Todo", priority: 1 },
-    { id: "CAM-7", title: "Create Onboarding Tutorial for New Users", tag: ["Feature Request"], userId: "usr-1", status: "Backlog", priority: 2 },
-    { id: "CAM-8", title: "Implement Role-Based Access Control (RBAC)", tag: ["Feature Request"], userId: "usr-3", status: "In progress", priority: 3 },
-    { id: "CAM-9", title: "Upgrade Server Infrastructure", tag: ["Feature Request"], userId: "usr-5", status: "Todo", priority: 2 },
-    { id: "CAM-10", title: "Conduct Security Vulnerability Assessment", tag: ["Feature Request"], userId: "usr-4", status: "Backlog", priority: 1 },
-  ];
+  const [ticketsData, setticketsData] = useState([]);
+  const [users, setusers] = useState([]);
 
-  const users = [
-    { id: "usr-1", name: "Anoop Sharma" },
-    { id: "usr-2", name: "Yogesh" },
-    { id: "usr-3", name: "Shankar Kumar" },
-    { id: "usr-4", name: "Ramesh" },
-    { id: "usr-5", name: "Suresh" },
-  ];
+  const apiEndpoint = "https://api.quicksell.co/v1/internal/frontend-assignment";
+
+  async function fetchData() {
+    try {
+      const response = await fetch(apiEndpoint);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setticketsData(data.tickets);
+      setusers(data.users);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const [groupBy, setGroupBy] = useState(() => localStorage.getItem("groupBy") || "status");
   const [sortBy, setSortBy] = useState(() => localStorage.getItem("sortBy") || "priority");
@@ -35,7 +39,7 @@ const App = () => {
     localStorage.setItem("sortBy", sortBy);
   }, [sortBy]);
 
-
+console.log("data from api",ticketsData)
   const groupTickets = () => {
     const grouped = ticketsData.reduce((acc, ticket) => {
       let key;
@@ -51,7 +55,7 @@ const App = () => {
     if (groupBy === "status") {
       const statusOrder = ["Backlog", "Todo", "In progress", "Done", "Cancelled"];
       statusOrder.forEach((status) => {
-        if (!grouped[status]) grouped[status] = []; 
+        if (!grouped[status]) grouped[status] = [];
       });
       return Object.fromEntries(
         statusOrder
@@ -62,7 +66,7 @@ const App = () => {
       const priorityOrder = ["Priority 0", "Priority 4", "Priority 3", "Priority 2", "Priority 1"];
       return Object.fromEntries(
         priorityOrder
-          .filter((key) => grouped[key]) 
+          .filter((key) => grouped[key])
           .map((key) => [key, grouped[key]])
       );
     }
