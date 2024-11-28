@@ -1,4 +1,5 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import Navbar from "./components/navbar.js";
 import "./App.css";
 
 const App = () => {
@@ -23,11 +24,9 @@ const App = () => {
     { id: "usr-5", name: "Suresh" },
   ];
 
-  // State Management
   const [groupBy, setGroupBy] = useState(() => localStorage.getItem("groupBy") || "status");
   const [sortBy, setSortBy] = useState(() => localStorage.getItem("sortBy") || "priority");
 
-  // Save preferences to localStorage when changed
   useEffect(() => {
     localStorage.setItem("groupBy", groupBy);
   }, [groupBy]);
@@ -44,35 +43,47 @@ const App = () => {
       else if (groupBy === "user") key = users.find((u) => u.id === ticket.userId)?.name || "Unassigned";
       else if (groupBy === "priority") key = `Priority ${ticket.priority}`;
       else key = "Uncategorized";
-  
+
       if (!acc[key]) acc[key] = [];
       acc[key].push(ticket);
       return acc;
     }, {});
-  
-    // If grouping by priority, reorder based on a custom order
+    if (groupBy === "status") {
+      const statusOrder = ["Backlog", "Todo", "In progress", "Done", "Cancelled"];
+      statusOrder.forEach((status) => {
+        if (!grouped[status]) grouped[status] = []; 
+      });
+      return Object.fromEntries(
+        statusOrder
+          .map((status) => [status, grouped[status]])
+      );
+    }
     if (groupBy === "priority") {
       const priorityOrder = ["Priority 0", "Priority 4", "Priority 3", "Priority 2", "Priority 1"];
       return Object.fromEntries(
         priorityOrder
-          .filter((key) => grouped[key]) // Only include groups that exist
+          .filter((key) => grouped[key]) 
           .map((key) => [key, grouped[key]])
       );
     }
-  
+
     return grouped;
   };
-  
-  const handlename =(name)=>{
-    switch(name){
+
+  const handlename = (name) => {
+    switch (name) {
       case "Priority 0": return "No priority";
       case "Priority 1": return "Low";
       case "Priority 2": return "Medium";
       case "Priority 3": return "High";
       case "Priority 4": return "Urgent";
+      case "In progress": return "In Progress";
+
       default: return name;
     }
   }
+
+
 
   const sortedTickets = (tickets) => {
     return tickets.sort((a, b) => {
@@ -84,42 +95,35 @@ const App = () => {
 
   const groupedTickets = groupTickets();
   console.log(groupedTickets);
-  
+
+
+
 
   return (
-    <div className="app-container">
-      <div className="controls">
-        <div className="dropdown">
-          <button className="dropdown-btn">Grouping</button>
-          <div className="dropdown-content">
-            <div onClick={() => setGroupBy("status")}>Status</div>
-            <div onClick={() => setGroupBy("user")}>User</div>
-            <div onClick={() => setGroupBy("priority")}>Priority</div>
-          </div>
+    <>
+      <Navbar groupBy={groupBy}
+        sortBy={sortBy}
+        setGroupBy={setGroupBy}
+        setSortBy={setSortBy}
+      />
+      <div className="app-container">
+        <div className="board">
+          {Object.entries(groupedTickets).map(([group, tickets]) => (
+            <div className="column" key={group}>
+              <h2>{handlename(group)}</h2>
+              {sortedTickets(tickets).map((ticket) => (
+                <div className="task-card" key={ticket.id}>
+                  <h3>{ticket.title}</h3>
+                  <p>{ticket.tag.join(", ")}</p>
+                  <p>Priority: {ticket.priority}</p>
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
-        <div className="dropdown">
-          <button className="dropdown-btn">Ordering</button>
-          <div className="dropdown-content">
-            <div onClick={() => setSortBy("priority")}>Priority</div>
-            <div onClick={() => setSortBy("title")}>Title</div>
-          </div>
-        </div>
-      </div>
-      <div className="board">
-        {Object.entries(groupedTickets).map(([group, tickets]) => (
-          <div className="column" key={group}>
-            <h2>{handlename(group)}</h2>
-            {sortedTickets(tickets).map((ticket) => (
-              <div className="task-card" key={ticket.id}>
-                <h3>{ticket.title}</h3>
-                <p>{ticket.tag.join(", ")}</p>
-                <p>Priority: {ticket.priority}</p>
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
+      </div >
+    </>
+
   );
 };
 

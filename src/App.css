@@ -1,52 +1,50 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f4;
-}
-
 .app-container {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f1f1f1;  
   padding: 20px;
+  box-sizing: border-box;  
 }
 
 .controls {
   display: flex;
-  justify-content: flex-start;
-  gap: 20px;
+  justify-content: space-between;
   margin-bottom: 20px;
+  background-color: white;
 }
 
 .dropdown {
   position: relative;
   display: inline-block;
+  margin-left: 2rem;
 }
 
 .dropdown-btn {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
+  background-color: #fff;
+  color: #333;
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
   cursor: pointer;
-}
-
-.dropdown-btn:hover {
-  background-color: #0056b3;
+  margin-top: 1rem;
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: white;
-  border: 1px solid #ddd;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  min-width: 300px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
   z-index: 1;
-  min-width: 120px;
-  border-radius: 5px;
 }
 
 .dropdown-content div {
-  padding: 10px;
+  color: #333;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
   cursor: pointer;
 }
 
@@ -59,30 +57,38 @@ body {
 }
 
 .board {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
+  flex-grow: 1;
+  overflow-y: auto;
 }
 
 .column {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  width: 300px;
+  padding: 20px;
 }
 
 .column h2 {
-  font-size: 20px;
-  font-weight: bold;
-  margin: 0 0 10px;
-  text-align: center;
+  font-size: 18px;
+  font-weight: 400;
+  margin-bottom: 30px;
 }
 
 .task-card {
-  background: #f9f9f9;
-  border-radius: 6px;
-  padding: 10px 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #ffff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
   margin-bottom: 10px;
+}
+
+.task-card h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.task-card p {
+  font-size: 14px;
+  margin: 5px 0;
 }
