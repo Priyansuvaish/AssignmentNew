@@ -146,7 +146,7 @@ const App = () => {
                 </h2>
               }
               {sortedTickets(tickets).map((ticket) => (
-                <Card ticket={ticket} groupBy={groupBy} handlename={handlename} />
+                <Card key={ticket.id} ticket={ticket} groupBy={groupBy} handlename={handlename} />
               ))}
             </div>
           ))}
