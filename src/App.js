@@ -40,7 +40,6 @@ const App = () => {
     localStorage.setItem("sortBy", sortBy);
   }, [sortBy]);
 
-  console.log("data from api", ticketsData)
   const groupTickets = () => {
     const grouped = ticketsData.reduce((acc, ticket) => {
       let key;
@@ -89,7 +88,6 @@ const App = () => {
 
   const handlename = (name) => {
     const t = priorities[name];
-    console.log(t);
     return t;
   }
 
@@ -104,7 +102,6 @@ const App = () => {
   };
 
   const groupedTickets = groupTickets();
-  console.log(groupedTickets);
 
 
 
