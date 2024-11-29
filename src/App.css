@@ -24,13 +24,20 @@
 .dropdown-btn {
   background-color: #fff;
   color: #333;
-  padding: 10px 20px;
+  padding: 6px 6px;
   border: 1px solid #ccc;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 1rem;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  margin-top: 1rem; 
+  gap: 8px; 
 }
-
+.dropdown-icon {
+  width: 16px; 
+  height: 16px; 
+}
 .dropdown-content {
   display: none;
   position: absolute;
@@ -59,29 +66,47 @@
 .board {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  grid-gap: 20px;
+  grid-gap: 15px;
   flex-grow: 1;
   overflow-y: auto;
 }
 
 .column {
-  padding: 20px;
+  padding: 10px 15px;
 }
 
 .column h2 {
+  display: flex; 
+  justify-content: space-between;
+  align-items: center; 
+  gap: 8px;
   font-size: 18px;
   font-weight: 400;
   margin-bottom: 30px;
+}
+.icon-container {
+  display: flex; 
+  gap: 8px; 
+  margin-left: 'auto'
+}
+.heading-icon {
+  width: 16px; 
+  height: 16px; 
+  cursor: pointer; 
 }
 
 .task-card {
   background-color: #ffff;
   border: 1px solid #ccc;
   border-radius: 4px;
-  padding: 10px;
+  padding: 20px;
   margin-bottom: 10px;
 }
-
+.card-icon {
+  width: 16px; 
+  height: 16px; 
+  margin-right: 5; 
+}
 .task-card h3 {
   font-size: 16px;
   font-weight: bold;

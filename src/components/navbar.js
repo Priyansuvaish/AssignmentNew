@@ -4,7 +4,7 @@ const navbar = ({groupBy,setGroupBy,sortBy,setSortBy}) => {
   return (
     <div className="controls">
         <div className="dropdown">
-          <button className="dropdown-btn">Display</button>
+          <button className="dropdown-btn"><img src="/icons_FEtask/Display.svg" alt="Dropdown" className="dropdown-icon"/>Display<img src="/icons_FEtask/down.svg" alt="Dropdown" className="dropdown-icon"/></button>
           <div className="dropdown-content">
             <div className="sub-dropdown">
               <div className="sub-dropdown-content">

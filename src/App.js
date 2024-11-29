@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "./components/navbar.js";
+import Card from "./components/cards.js";
 import "./App.css";
 
 const App = () => {
@@ -39,7 +40,7 @@ const App = () => {
     localStorage.setItem("sortBy", sortBy);
   }, [sortBy]);
 
-console.log("data from api",ticketsData)
+  console.log("data from api", ticketsData)
   const groupTickets = () => {
     const grouped = ticketsData.reduce((acc, ticket) => {
       let key;
@@ -73,18 +74,23 @@ console.log("data from api",ticketsData)
 
     return grouped;
   };
+  const priorities = {
+    "Priority 0": { name: "No priority", url: "/icons_FEtask/No-priority.svg" },
+    "Priority 1": { name: "Low", url: "/icons_FEtask/Img - Low Priority.svg" },
+    "Priority 2": { name: "Medium", url: "/icons_FEtask/Img - Medium Priority.svg" },
+    "Priority 3": { name: "High", url: "/icons_FEtask/Img - High Priority.svg" },
+    "Priority 4": { name: "Urgent", url: "/icons_FEtask/SVG - Urgent Priority colour.svg" },
+    "In progress": { name: "In Progress", url: "/icons_FEtask/in-progress.svg" },
+    "Backlog": { name: "Backlog", url: "/icons_FEtask/Backlog.svg" },
+    "Cancelled": { name: "Cancelled", url: "/icons_FEtask/Cancelled.svg" },
+    "Done": { name: "Done", url: "/icons_FEtask/Done.svg" },
+    "Todo": { name: "Todo", url: "/icons_FEtask/To-do.svg" },
+  };
 
   const handlename = (name) => {
-    switch (name) {
-      case "Priority 0": return "No priority";
-      case "Priority 1": return "Low";
-      case "Priority 2": return "Medium";
-      case "Priority 3": return "High";
-      case "Priority 4": return "Urgent";
-      case "In progress": return "In Progress";
-
-      default: return name;
-    }
+    const t = priorities[name];
+    console.log(t);
+    return t;
   }
 
 
@@ -102,7 +108,6 @@ console.log("data from api",ticketsData)
 
 
 
-
   return (
     <>
       <Navbar groupBy={groupBy}
@@ -114,13 +119,37 @@ console.log("data from api",ticketsData)
         <div className="board">
           {Object.entries(groupedTickets).map(([group, tickets]) => (
             <div className="column" key={group}>
-              <h2>{handlename(group)}</h2>
+              {groupBy !== "user" ?
+                <h2>
+                  <div className="icon-container">
+                    <img src={handlename(group).url} alt="Dropdown" className="heading-icon" />
+                    <span>
+
+                      {handlename(group).name}
+                    </span>
+                    <span style={{ marginLeft: '8px' }}>{tickets.length}</span>
+                  </div>
+
+                  <div className="icon-container">
+
+                    <img src="/icons_FEtask/add.svg" alt="Dropdown" className="heading-icon" />
+                    <img src="/icons_FEtask/3 dot menu.svg" alt="Dropdown" className="heading-icon" />
+                  </div>
+                </h2> :
+                <h2>
+                  <div className="icon-container">
+
+                    <span>{group}</span>
+                    <span style={{ marginLeft: '2px' }}>{tickets.length}</span>
+                  </div>
+                  <div className="icon-container">
+                    <img src="/icons_FEtask/add.svg" alt="Dropdown" className="heading-icon" />
+                    <img src="/icons_FEtask/3 dot menu.svg" alt="Dropdown" className="heading-icon" />
+                  </div>
+                </h2>
+              }
               {sortedTickets(tickets).map((ticket) => (
-                <div className="task-card" key={ticket.id}>
-                  <h3>{ticket.title}</h3>
-                  <p>{ticket.tag.join(", ")}</p>
-                  <p>Priority: {ticket.priority}</p>
-                </div>
+                <Card ticket={ticket} groupBy={groupBy} handlename={handlename} />
               ))}
             </div>
           ))}
